@@ -29,8 +29,7 @@ class ResolvName:
             return '{} 60 A {}'.format(name, ip)
 
         if q_name[:-1] in restrict:
-            d.header.rcode = dnslib.RCODE.REFUSED
-            #d.add_answer(*RR.fromZone(dns_url(q_name[:-1], bloc_forv)))
+            d.add_answer(*RR.fromZone(dns_url(q_name[:-1], bloc_forv)))
         elif q_name[:-1] in resovl.keys():
             d.add_answer(*RR.fromZone(dns_url(q_name[:-1], resovl[q_name[:-1]])))
         else:
