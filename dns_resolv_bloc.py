@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from json import loads
 from dnslib import *
 from dnslib import server
@@ -9,39 +11,35 @@ def load_json():
 
 # download the configuration file
 conf = load_json()
+print(conf)
 
 local_dns = conf['loc_dns']             # local address dns server
 local_port = conf['loc_port']           # local port dns server
 ext_dns = conf['ext_dns']               # external address dns server
 ext_port = conf['ext_port']             # external port dns server
-bloc_forv = conf['bloc']['forward']     # address to which blocked resources are forward
-restrict = conf['bloc']['restricted']   # list of blocked resources
+restrict = conf['bloc']                 # list of blocked resources
 resovl = conf['resolv']                 # local name resources
 
 
 class ResolvName:
+    """
+    DNS query processing. Requests to resources that are 
+    restricted are blocked. Processing resolver name on 
+    the local network.
+    """
     def resolve(self, request, handler):
         d = request.reply()
         q = request.get_q()
         q_name = str(q.qname)
         
-        def dns_url(name, ip):
-            return '{} 60 A {}'.format(name, ip)
-
         if q_name[:-1] in restrict:
-            d.add_answer(*RR.fromZone(dns_url(q_name[:-1], bloc_forv)))
-        elif q_name[:-1] in resovl.keys():
-            d.add_answer(*RR.fromZone(dns_url(q_name[:-1], resovl[q_name[:-1]])))
-        else:
+            d.truncate()                        # handling resource limits
+        elif q_name[:-1] in resovl.keys():      # local network name resolver
+            d.add_answer(*RR.fromZone('{} 60 A {}'.format(q_name[:-1], resovl[q_name[:-1]])))
+        else:                                   # processing other requests
             a = DNSRecord.parse(DNSRecord.question(q_name).send(ext_dns, ext_port))
-            print('===================')
-            print(a)
-            print('===================')
-            print(a.rr)
-            print('===================')
             for rr in a.rr:
                 d.add_answer(rr)
-        print(d)
         return d
 
 resolver = ResolvName()
