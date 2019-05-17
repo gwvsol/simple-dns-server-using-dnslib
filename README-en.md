@@ -55,5 +55,5 @@ access from the local network
 
 Starting the container
 ```bash
-docker run --name dns-proxy -p 192.168.1.30:53:53/udp -v $(pwd):/var/dns-proxy --rm -td dns-proxy:latest
+docker run --name dns-proxy -p your_ip:53:53/udp -v $(pwd):/var/dns-proxy --rm -td dns-proxy:latest
 ```
