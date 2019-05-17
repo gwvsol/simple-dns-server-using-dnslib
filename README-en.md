@@ -2,6 +2,8 @@
 
 Simple dns server with the ability to block Internet resources
 
+[README in Russian](https://github.com/gwvsol/Simple-DNS-server-using-dnslib "README in Russian")
+
 ***
 ### Description
 The DNS server uses the library [dnslib](https://github.com/paulchakravarti/dnslib "GitHub")
