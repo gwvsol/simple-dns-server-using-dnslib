@@ -1,6 +1,7 @@
 ## Simple DNS server using dnslib
 
 Простой dns сервер с возможностью блокировки интернет ресурсов
+
 [README in English](https://github.com/gwvsol/Simple-DNS-server-using-dnslib/blob/dev/README-en.md "README in English")
 
 ***
