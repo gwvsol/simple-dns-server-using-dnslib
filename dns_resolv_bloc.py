@@ -11,9 +11,9 @@ def load_json():
 
 # download the configuration file
 conf = load_json()
-print(conf)
 
-local_dns = conf['loc_dns']             # local address dns server
+#local_dns = conf['loc_dns']            # local address dns server (for run others)
+local_dns = '0.0.0.0' #conf['loc_dns']  # local address dns server (for run Docker)
 local_port = conf['loc_port']           # local port dns server
 ext_dns = conf['ext_dns']               # external address dns server
 ext_port = conf['ext_port']             # external port dns server
