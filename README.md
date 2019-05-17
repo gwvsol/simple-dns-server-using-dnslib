@@ -5,7 +5,9 @@
 ***
 ### Краткое описание
 DNS сервер использует библиотеку [dnslib](https://github.com/paulchakravarti/dnslib "GitHub")
-Для настройки используется файл ```dns.conf```.Файл имеет вид:
+Для настройки используется файл ```dns.conf```.
+
+Файл имеет вид:
 ```json
 {
     "ext_dns": "8.8.8.8",
@@ -20,6 +22,7 @@ DNS сервер использует библиотеку [dnslib](https://gith
 }
 ```
 ##### Описание параметров файла настройки
+
 ```ext_dns```   - IP адрес внешнего DNS сервера куда передаются запросы
  
 ```ext_port```  - порт внешнего DNS сервера
@@ -39,6 +42,18 @@ DNS сервер использует библиотеку [dnslib](https://gith
 > ```#local_dns = conf['loc_dns']``` необходимо раскомментировать, а следующей за ней строку закоментировать
 > ```local_dns = '0.0.0.0'```
 
+##### Запуск сервиса в Docker
 
+Создание образа Docker
+```bash
+git clone https://github.com/gwvsol/Simple-DNS-server-using-dnslib.git
+cd Simple-DNS-server-using-dnslib/
+docker build -t dns-proxy:latest .
+```
+Далее необходимо указать в файле ```dns.conf``` ресурсы к которым необходимо ограничить 
+доступ из локальной сети
 
-  
+Запуск контейнера
+```bash
+docker run --name dns-proxy -p 192.168.1.30:53:53/udp -v $(pwd):/var/dns-proxy --rm -td dns-proxy:latest
+```
